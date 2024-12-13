@@ -53,6 +53,15 @@ public class Creature
             _level++;
     }
 
+    public void Go(Direction direction) => Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}");
+
+    public void Go(Direction[] directions) => Array.ForEach(directions, Go);
+
+    public void Go(string input)
+    {
+        Go(DirectionParser.Parse(input));
+    }
+
     public string Info
     {
         get => $"{Name} [{Level}]";
