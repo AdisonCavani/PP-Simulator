@@ -1,37 +1,23 @@
 ﻿namespace Simulator;
 
-public class Creature
+public abstract class Creature
 {
     private string _name = "Unknown";
     private int _level;
 
+    public abstract int Power { get; }
+    public abstract string Info { get; }
+
     public string Name
     {
         get => _name;
-        init
-        {
-            var name = value.Trim();
-
-            if (string.IsNullOrEmpty(name))
-                return;
-
-            if (name.Length > 25)
-                name = name.Substring(25).TrimEnd();
-
-            if (name.Length < 3)
-                name = name.PadRight(3, '#');
-
-            if (char.IsLower(name[0]))
-                name = char.ToUpper(name[0]) + name.Substring(1);
-
-            _name = name;
-        }
+        init => _name = Validator.Shortener(value, 3, 25, '#');
     }
 
     public int Level
     {
         get => _level;
-        init => _level = Math.Clamp(value, 1, 10);
+        init => _level = Validator.Limiter(value, 1, 10);
     }
 
     public Creature(string name, int level = 1)
@@ -45,7 +31,7 @@ public class Creature
         
     }
 
-    public void SayHi() => Console.WriteLine($"Hi, I am {Name}, my level is {Level}");
+    public abstract void SayHi();
 
     public void Upgrade()
     {
@@ -62,8 +48,8 @@ public class Creature
         Go(DirectionParser.Parse(input));
     }
 
-    public string Info
+    public override string ToString()
     {
-        get => $"{Name} [{Level}]";
+        return $"{GetType().Name.ToUpper()}: {Name} [{Level}]{Info}";
     }
 }
