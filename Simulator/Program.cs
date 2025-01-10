@@ -1,33 +1,42 @@
 ﻿using Simulator;
+using Simulator.Maps;
 
 Console.WriteLine("Starting Simulator!\n");
 
-Lab5a();
+Lab5b();
 
-static void Lab5a()
+static void Lab5b()
 {
     try
     {
-        var rect1 = new Rectangle(10, 20, 5, 15);
-        Console.WriteLine($"Rectangle 1: {rect1}");
+        var map = new SmallSquareMap(10);
+        Console.WriteLine("Created map (size = 10)");
 
-        var point11 = new Point(3, 7);
-        var point12 = new Point(8, 2);
-        var rect2 = new Rectangle(point11, point12);
-        Console.WriteLine($"Rectangle 2: {rect2}");
+        var p1 = new Point(0, 0);
+        var p2 = new Point(9, 9);
+        var p3 = new Point(5, 5);
 
-        var flatRect = new Rectangle(5, 5, 10, 5);
+        Console.WriteLine($"Point {p1} exists: {map.Exist(p1)}");
+        Console.WriteLine($"Point {p2} exists: {map.Exist(p2)}");
+        Console.WriteLine($"Point {p3} exists: {map.Exist(p3)}");
+
+        var p4 = new Point(10, 10);
+        Console.WriteLine($"Point {p4} exists: {map.Exist(p4)}");
+
+        var next1 = map.Next(p1, Direction.Right);
+        Console.WriteLine($"Next point from {p1} to Right: {next1}");
+
+        var next2 = map.Next(p2, Direction.Right);
+        Console.WriteLine($"Next point from {p2} to Right: {next2}");
+
+        var nextDiagonal1 = map.NextDiagonal(p1, Direction.Up);
+        Console.WriteLine($"Next diagonal point from {p1} Up: {nextDiagonal1}");
+
+        var nextDiagonal2 = map.NextDiagonal(p2, Direction.Right);
+        Console.WriteLine($"Next diagonal point from {p2} Right: {nextDiagonal2}");
     }
-    catch (ArgumentException ex)
+    catch (ArgumentOutOfRangeException ex)
     {
         Console.WriteLine($"Exception: {ex.Message}");
     }
-
-    var rect3 = new Rectangle(2, 3, 7, 8);
-    var point31 = new Point(4, 5);
-    var point32 = new Point(1, 1);
-
-    Console.WriteLine($"Rectangle: {rect3}");
-    Console.WriteLine($"Rectangle contains point {point31}: {rect3.Contains(point31)}");
-    Console.WriteLine($"Rectangle contains point {point32}: {rect3.Contains(point32)}");
 }
