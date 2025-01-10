@@ -1,57 +1,33 @@
 ﻿using Simulator;
 
 Console.WriteLine("Starting Simulator!\n");
-Lab4a();
-Lab4b();
 
-static void Lab4a()
+Lab5a();
+
+static void Lab5a()
 {
-    Console.WriteLine("HUNT TEST\n");
-    var o = new Orc() { Name = "Gorbag", Rage = 7 };
-    o.SayHi();
-    for (int i = 0; i < 10; i++)
+    try
     {
-        o.Hunt();
-        o.SayHi();
+        var rect1 = new Rectangle(10, 20, 5, 15);
+        Console.WriteLine($"Rectangle 1: {rect1}");
+
+        var point11 = new Point(3, 7);
+        var point12 = new Point(8, 2);
+        var rect2 = new Rectangle(point11, point12);
+        Console.WriteLine($"Rectangle 2: {rect2}");
+
+        var flatRect = new Rectangle(5, 5, 10, 5);
+    }
+    catch (ArgumentException ex)
+    {
+        Console.WriteLine($"Exception: {ex.Message}");
     }
 
-    Console.WriteLine("\nSING TEST\n");
-    var e = new Elf("Legolas", agility: 2);
-    e.SayHi();
-    for (int i = 0; i < 10; i++)
-    {
-        e.Sing();
-        e.SayHi();
-    }
+    var rect3 = new Rectangle(2, 3, 7, 8);
+    var point31 = new Point(4, 5);
+    var point32 = new Point(1, 1);
 
-    Console.WriteLine("\nPOWER TEST\n");
-    Creature[] creatures = {
-        o,
-        e,
-        new Orc("Morgash", 3, 8),
-        new Elf("Elandor", 5, 3)
-    };
-    foreach (Creature creature in creatures)
-    {
-        Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
-    }
-}
-
-static void Lab4b()
-{
-    object[] myObjects = {
-        new Animals() { Description = "dogs"},
-        new Birds { Description = "  eagles ", Size = 10 },
-        new Elf("e", 15, -3),
-        new Orc("morgash", 6, 4)
-    };
-    Console.WriteLine("\nMy objects:");
-    foreach (var o in myObjects) Console.WriteLine(o);
-    /*
-        My objects:
-        ANIMALS: Dogs <3>
-        BIRDS: Eagles (fly+) <10>
-        ELF: E## [10][0]
-        ORC: Morgash [6][4]
-    */
+    Console.WriteLine($"Rectangle: {rect3}");
+    Console.WriteLine($"Rectangle contains point {point31}: {rect3.Contains(point31)}");
+    Console.WriteLine($"Rectangle contains point {point32}: {rect3.Contains(point32)}");
 }
