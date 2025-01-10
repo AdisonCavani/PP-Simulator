@@ -12,7 +12,7 @@ public class SmallTorusMap : Map
         Size = size;
     }
 
-    public override bool Exist(Point p)
+    public override bool Exists(Point p)
     {
         return new Rectangle(new Point(0, 0), new Point(Size - 1, Size - 1)).Contains(p);
     }

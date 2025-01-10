@@ -12,7 +12,7 @@ public class SmallSquareMap : Map
         Size = size;
     }
 
-    public override bool Exist(Point p)
+    public override bool Exists(Point p)
     {
         return new Rectangle(0, 0, Size - 1, Size - 1).Contains(p);
     }
@@ -21,7 +21,7 @@ public class SmallSquareMap : Map
     {
         var nextPoint = p.Next(d);
 
-        if (!Exist(nextPoint))
+        if (!Exists(nextPoint))
             return p;
 
         return nextPoint;
@@ -31,7 +31,7 @@ public class SmallSquareMap : Map
     {
         var nextPoint = p.NextDiagonal(d);
 
-        if (!Exist(nextPoint))
+        if (!Exists(nextPoint))
             return p;
 
         return nextPoint;

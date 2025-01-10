@@ -3,7 +3,7 @@ using Simulator.Maps;
 
 namespace TestSimulator;
 
-public class SmallTorusMapTests
+public class SmalSquareMapTests
 {
     [Fact]
     public void Constructor_ValidSize_ShouldSetSize()
@@ -11,7 +11,7 @@ public class SmallTorusMapTests
         // Arrange
         int size = 10;
         // Act
-        var map = new SmallTorusMap(size);
+        var map = new SmallSquareMap(size);
         // Assert
         Assert.Equal(size, map.Size);
     }
@@ -26,7 +26,7 @@ public class SmallTorusMapTests
         // Act & Assert
         // The way to check if method throws anticipated exception:
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-             new SmallTorusMap(size));
+             new SmallSquareMap(size));
     }
 
     [Theory]
@@ -38,7 +38,7 @@ public class SmallTorusMapTests
         int size, bool expected)
     {
         // Arrange
-        var map = new SmallTorusMap(size);
+        var map = new SmallSquareMap(size);
         var point = new Point(x, y);
         // Act
         var result = map.Exists(point);
@@ -48,14 +48,13 @@ public class SmallTorusMapTests
 
     [Theory]
     [InlineData(5, 10, Direction.Up, 5, 11)]
-    [InlineData(0, 0, Direction.Down, 0, 19)]
-    [InlineData(0, 8, Direction.Left, 19, 8)]
-    [InlineData(19, 10, Direction.Right, 0, 10)]
+    [InlineData(0, 3, Direction.Down, 0, 2)]
+    [InlineData(19, 10, Direction.Right, 19, 10)]
     public void Next_ShouldReturnCorrectNextPoint(int x, int y,
         Direction direction, int expectedX, int expectedY)
     {
         // Arrange
-        var map = new SmallTorusMap(20);
+        var map = new SmallSquareMap(20);
         var point = new Point(x, y);
         // Act
         var nextPoint = map.Next(point, direction);
@@ -65,14 +64,14 @@ public class SmallTorusMapTests
 
     [Theory]
     [InlineData(5, 10, Direction.Up, 6, 11)]
-    [InlineData(0, 0, Direction.Down, 19, 19)]
-    [InlineData(0, 8, Direction.Left, 19, 9)]
-    [InlineData(19, 10, Direction.Right, 0, 9)]
+    [InlineData(0, 0, Direction.Down, 0, 0)]
+    [InlineData(0, 8, Direction.Left, 0, 8)]
+    [InlineData(19, 10, Direction.Right, 19, 10)]
     public void NextDiagonal_ShouldReturnCorrectNextPoint(int x, int y,
         Direction direction, int expectedX, int expectedY)
     {
         // Arrange
-        var map = new SmallTorusMap(20);
+        var map = new SmallSquareMap(20);
         var point = new Point(x, y);
         // Act
         var nextPoint = map.NextDiagonal(point, direction);

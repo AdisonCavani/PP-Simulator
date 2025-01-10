@@ -10,7 +10,7 @@ public abstract class Map
     /// </summary>
     /// <param name="p">Point to check.</param>
     /// <returns></returns>
-    public abstract bool Exist(Point p);
+    public abstract bool Exists(Point p);
 
     /// <summary>
     /// Next position to the point in a given direction.
