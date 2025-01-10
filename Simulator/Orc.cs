@@ -33,9 +33,9 @@ public class Orc : Creature
     }
 
 
-    public override void SayHi()
+    public override string Greeting()
     {
-        Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
+        return $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
     }
 
     public void Hunt()
@@ -45,17 +45,12 @@ public class Orc : Creature
         if (_count % _rageMultiplier == 0 && Rage < 10)
         {
             _rage++;
-            Console.WriteLine($"{Name} is hunting. You gained +1 in rage. Your rage is now {Rage}.");
             _count = 0;
         }
 
         else if ((_count % _rageMultiplier == 0 && Rage >= 10) || Rage >= 10)
         {
-            Console.WriteLine($"{Name} is hunting. You reached max rage.");
             _count = 0;
         }
-
-        else
-            Console.WriteLine($"{Name} is hunting. Hunt {_rageMultiplier - _count} more time(s) to +1 in rage.");
     }
 }

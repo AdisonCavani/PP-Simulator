@@ -28,10 +28,10 @@ public abstract class Creature
 
     public Creature()
     {
-        
+
     }
 
-    public abstract void SayHi();
+    public abstract string Greeting();
 
     public void Upgrade()
     {
@@ -39,13 +39,23 @@ public abstract class Creature
             _level++;
     }
 
-    public void Go(Direction direction) => Console.WriteLine($"{Name} goes {direction.ToString().ToLower()}");
+    public string Go(Direction direction) => $"{Name} goes {direction.ToString().ToLower()}";
 
-    public void Go(Direction[] directions) => Array.ForEach(directions, Go);
-
-    public void Go(string input)
+    public string[] Go(Direction[] directions)
     {
-        Go(DirectionParser.Parse(input));
+        var arr = new string[directions.Length];
+
+        for (int i = 0; i < directions.Length; i++)
+        {
+            arr[i] = Go(directions[i]);
+        }
+
+        return arr;
+    }
+
+    public string[] Go(string input)
+    {
+        return Go(DirectionParser.Parse(input));
     }
 
     public override string ToString()
