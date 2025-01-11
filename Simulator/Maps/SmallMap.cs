@@ -2,17 +2,17 @@
 
 public class SmallMap : Map
 {
-    private List<Creature>?[,] _creaturesArray;
+    private List<IMappable>?[,] _creaturesArray;
 
     public SmallMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
         if (sizeX > 20 || sizeY > 20)
             throw new ArgumentOutOfRangeException("Max size = 20");
 
-        _creaturesArray = new List<Creature>[sizeX, sizeY];
+        _creaturesArray = new List<IMappable>[sizeX, sizeY];
     }
 
-    public override void Add(Creature creature, Point position)
+    public override void Add(IMappable creature, Point position)
     {
         if (!Exists(position))
             throw new ArgumentException("Point doesnt belong to map!");
@@ -25,7 +25,7 @@ public class SmallMap : Map
         creature.Initialize(this, position, false);
     }
 
-    public override void Remove(Creature creature, Point position)
+    public override void Remove(IMappable creature, Point position)
     {
         var creatures = _creaturesArray[position.X, position.Y];
 
@@ -36,17 +36,17 @@ public class SmallMap : Map
         creature.ClearMap();
     }
 
-    public override List<Creature>? At(int posX, int posY)
+    public override List<IMappable>? At(int posX, int posY)
     {
         return At(new Point(posX, posY));
     }
 
-    public override List<Creature>? At(Point position)
+    public override List<IMappable>? At(Point position)
     {
         if (!Exists(position))
             return null;
 
-        var creatures = new List<Creature>();
+        var creatures = new List<IMappable>();
 
         foreach (var creature in _creaturesArray[position.X, position.Y] ?? [])
             creatures.Add(creature);
