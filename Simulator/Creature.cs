@@ -1,4 +1,6 @@
-﻿namespace Simulator;
+﻿using Simulator.Maps;
+
+namespace Simulator;
 
 public abstract class Creature
 {
@@ -7,6 +9,10 @@ public abstract class Creature
 
     public abstract int Power { get; }
     public abstract string Info { get; }
+
+    public Map? Map { get; set; }
+
+    public Point Position { get; set; }
 
     public string Name
     {
@@ -39,27 +45,31 @@ public abstract class Creature
             _level++;
     }
 
-    public string Go(Direction direction) => $"{Name} goes {direction.ToString().ToLower()}";
-
-    public string[] Go(Direction[] directions)
+    public string Go(Direction direction)
     {
-        var arr = new string[directions.Length];
+        if (Map is null)
+            return $"Creature '{Name}' is not on any map";
 
-        for (int i = 0; i < directions.Length; i++)
-        {
-            arr[i] = Go(directions[i]);
-        }
-
-        return arr;
-    }
-
-    public string[] Go(string input)
-    {
-        return Go(DirectionParser.Parse(input));
+        Map.Move(this, Position, Map.Next(Position, direction));
+        return direction.ToString().ToLower();
     }
 
     public override string ToString()
     {
         return $"{GetType().Name.ToUpper()}: {Name} [{Level}]{Info}";
+    }
+
+    public void Initialize(Map map, Point position, bool initializeMap)
+    {
+        Map = map;
+        Position = position;
+
+        if (initializeMap)
+            Map.Add(this, position);
+    }
+
+    public void ClearMap()
+    {
+        Map = null;
     }
 }
