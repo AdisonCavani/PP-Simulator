@@ -5,12 +5,28 @@
 /// </summary>
 public abstract class Map
 {
+    public int SizeX { get; init; }
+
+    public int SizeY { get; init; }
+
+    private readonly Rectangle _rectangle;
+
+    public Map(int sizeX, int sizeY)
+    {
+        if (sizeX < 5 || sizeY < 5)
+            throw new ArgumentOutOfRangeException("Minimum size = 5");
+
+        SizeX = sizeX;
+        SizeY = sizeY;
+        _rectangle = new(0, 0, SizeX - 1, SizeY - 1);
+    }
+
     /// <summary>
     /// Check if give point belongs to the map.
     /// </summary>
     /// <param name="p">Point to check.</param>
     /// <returns></returns>
-    public abstract bool Exists(Point p);
+    public bool Exists(Point p) => _rectangle.Contains(p);
 
     /// <summary>
     /// Next position to the point in a given direction.
