@@ -46,13 +46,24 @@ public class MapVisualizer
                 if (creatures is null || creatures.Count == 0)
                     _mapDataStr[y] += " ";
                 else if (creatures.Count == 1)
-                    _mapDataStr[y] += creatures[0] is Orc ? 'O' : 'E';
+                    _mapDataStr[y] += GetSymbol(creatures[0]);
                 else
                     _mapDataStr[y] += 'X';
 
                 _mapDataStr[y] += Box.Vertical;
             }
         }
+    }
+
+    private char GetSymbol(IMappable creature)
+    {
+        return creature switch
+        {
+            Orc => 'O',
+            Elf => 'E',
+            Birds => ((Birds)creature).CanFly ? 'B' : 'b',
+            _ => 'A',
+        };
     }
 
     public void Draw()

@@ -14,4 +14,17 @@ public class Birds : Animals
     {
         get => CanFly == true ? "(fly+) " : "(fly-) ";
     }
+
+    public override string Go(Direction direction)
+    {
+        if (Map is not null && !CanFly)
+            Map.Move(this, Position, Map.NextDiagonal(Position, direction));
+        else if (Map is not null)
+        {
+            Map.Move(this, Position, Map.Next(Position, direction));
+            Map.Move(this, Position, Map.Next(Position, direction));
+        }
+
+        return direction.ToString().ToLower();
+    }
 }
