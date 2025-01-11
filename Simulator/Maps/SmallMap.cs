@@ -1,10 +1,8 @@
-﻿using System.Drawing;
-
-namespace Simulator.Maps;
+﻿namespace Simulator.Maps;
 
 public class SmallMap : Map
 {
-    private List<Creature>[,] _creaturesArray;
+    private List<Creature>?[,] _creaturesArray;
 
     public SmallMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
@@ -19,20 +17,22 @@ public class SmallMap : Map
         if (!Exists(position))
             throw new ArgumentException("Point doesnt belong to map!");
 
-        if (_creaturesArray[position.X, position.Y] is null || _creaturesArray[position.X, position.Y].Count == 0)
+        if (_creaturesArray[position.X, position.Y] is null || _creaturesArray[position.X, position.Y]?.Count == 0)
             _creaturesArray[position.X, position.Y] = new() { creature };
         else
-            _creaturesArray[position.X, position.Y].Add(creature);
+            _creaturesArray[position.X, position.Y]?.Add(creature);
 
-        creature.Initialize(this, position, true);
+        creature.Initialize(this, position, false);
     }
 
     public override void Remove(Creature creature, Point position)
     {
-        if (!_creaturesArray[position.X, position.Y].Contains(creature))
-            throw new ArgumentException("");
+        var creatures = _creaturesArray[position.X, position.Y];
 
-        _creaturesArray[position.X, position.Y].Remove(creature);
+        if (creatures is null || !creatures.Contains(creature))
+            return;
+
+        _creaturesArray[position.X, position.Y]?.Remove(creature);
         creature.ClearMap();
     }
 
@@ -48,7 +48,7 @@ public class SmallMap : Map
 
         var creatures = new List<Creature>();
 
-        foreach ( var creature in _creaturesArray[position.X, position.Y])
+        foreach (var creature in _creaturesArray[position.X, position.Y] ?? [])
             creatures.Add(creature);
 
         return creatures;
