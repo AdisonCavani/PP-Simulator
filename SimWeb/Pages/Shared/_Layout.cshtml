@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SimWeb</title>
+    <link rel="stylesheet" href="~/styles.css" asp-append-version="true" />
+</head>
+<body>
+    <nav>
+        <a class="header-link" asp-area="" asp-page="/Index">SimWeb</a>
+        <a class="nav-link" asp-area="" asp-page="/Index">Informacje</a>
+        <a class="nav-link" asp-area="" asp-page="/Simulation">Symulacja</a>
+    </nav>
+
+        <main>
+            @RenderBody()
+        </main>
+
+    <footer class="border-top footer text-muted container">
+        &copy; 2025 Adrian Środoń
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

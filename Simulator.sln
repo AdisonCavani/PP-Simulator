@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator", "Simulator\Simulator.csproj", "{2B182C0A-923E-41AB-B998-44E96C79688D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulator", "Simulator\Simulator.csproj", "{2B182C0A-923E-41AB-B998-44E96C79688D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{2872947A-A5D6-4152-836C-45DDDD8009E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runner", "Runner\Runner.csproj", "{2872947A-A5D6-4152-836C-45DDDD8009E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSimulator", "TestSimulator\TestSimulator.csproj", "{8D25468B-EB13-4A50-B410-06CFC2F1D23F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestSimulator", "TestSimulator\TestSimulator.csproj", "{8D25468B-EB13-4A50-B410-06CFC2F1D23F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimConsole", "SimConsole\SimConsole.csproj", "{8B9FBA76-F891-4EF2-B3CE-A111A4CD62A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimConsole", "SimConsole\SimConsole.csproj", "{8B9FBA76-F891-4EF2-B3CE-A111A4CD62A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimWeb", "SimWeb\SimWeb.csproj", "{8FB20F82-EA40-4A95-99FF-92030C5374E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{8B9FBA76-F891-4EF2-B3CE-A111A4CD62A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B9FBA76-F891-4EF2-B3CE-A111A4CD62A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B9FBA76-F891-4EF2-B3CE-A111A4CD62A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FB20F82-EA40-4A95-99FF-92030C5374E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FB20F82-EA40-4A95-99FF-92030C5374E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FB20F82-EA40-4A95-99FF-92030C5374E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FB20F82-EA40-4A95-99FF-92030C5374E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4630EBF0-49D3-4D5C-B359-0EB1839DC2A6}
 	EndGlobalSection
 EndGlobal
