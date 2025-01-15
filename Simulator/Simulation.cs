@@ -44,7 +44,16 @@ public class Simulation
     /// <summary>
     /// Lowercase name of direction which will be used in current turn.
     /// </summary>
-    public string CurrentMoveName => DirectionParser.Parse(Moves)[_index].ToString().ToLower();
+    public string CurrentMoveName { get
+        {
+            var directions = DirectionParser.Parse(Moves);
+
+            if (directions.Length > _index)
+                return directions[_index].ToString().ToLower();
+
+            return "";
+        }
+    }
 
     /// <summary>
     /// Simulation constructor.
@@ -64,7 +73,7 @@ public class Simulation
 
         Creatures = creatures;
         Positions = positions;
-        Moves = moves;
+        Moves = DirectionParser.ParseStr(moves);
 
         _index = 0;
 

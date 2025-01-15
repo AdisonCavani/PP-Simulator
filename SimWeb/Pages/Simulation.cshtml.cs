@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Simulator.Maps;
 using Simulator;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace SimWeb.Pages;
 
@@ -8,38 +10,100 @@ public class SimulationModel : PageModel
 {
     public int Counter { get; private set; }
 
-    public Simulation Simulation = new(
+    [BindProperty]
+    public string? Moves { get; set; }
+
+    [BindProperty]
+    public int MapWidth { get; set; } = 8;
+
+    [BindProperty]
+    public int MapHeight { get; set; } = 6;
+
+    public Simulation Simulation { get; set; } = new(
         new SmallTorusMap(8, 6),
         [
             new Orc("Gorbag"),
             new Elf("Elandor"),
             new Animals() {Description = "Rabbits", Size = 5},
             new Birds() {Description = "Eagles", Size = 15, CanFly = true},
-            new Birds() {Description = "Ostriches", Size = 75, CanFly = false}
         ],
-        [new(2, 2), new(3, 1), new(4, 2), new(5, 0), new(7, 3)],
-        "dlrludlrdudrduu"
+        [new(0, 0), new(0, 0), new(0, 0), new(0, 0)],
+        ""
     );
 
     public void OnGet()
     {
-        Counter = Math.Clamp(HttpContext.Session.GetInt32("Counter") ?? 1, 1, Simulation.Moves.Length);
+        CreateSimulation();
+
+        Counter = Math.Clamp(Counter, 0, Simulation.Moves.Length);
+
         RunSimulation();
     }
 
-    public void OnPost()
+    public void OnPostSubmit()
     {
-        Counter = HttpContext.Session.GetInt32("Counter") ?? 1;
+        HttpContext.Session.SetString("Moves", Moves ?? "");
+        HttpContext.Session.SetInt32("MapWidth", Math.Clamp(MapWidth, 5, 20));
+        HttpContext.Session.SetInt32("MapHeight", Math.Clamp(MapHeight, 5, 20));
 
-        if (Request.Form["type"] == "increment")
-            Counter++;
-        else if (Counter > 1)
-            Counter--;
+        CreateSimulation();
 
-        Counter = Math.Clamp(Counter, 1, Simulation.Moves.Length);
+        if (Simulation.Moves.Length > 0)
+            Counter = 1;
+        else
+            Counter = 0;
 
         HttpContext.Session.SetInt32("Counter", Counter);
+
         RunSimulation();
+    }
+
+    public void OnPostDecrement()
+    {
+        CreateSimulation();
+
+        Counter--;
+        Counter = Math.Clamp(Counter, 0, Simulation.Moves.Length);
+
+        HttpContext.Session.SetInt32("Counter", Counter);
+
+        RunSimulation();
+    }
+
+    public void OnPostIncrement()
+    {
+        CreateSimulation();
+
+        Counter++;
+        Counter = Math.Clamp(Counter, 0, Simulation.Moves.Length);
+
+        HttpContext.Session.SetInt32("Counter", Counter);
+
+        RunSimulation();
+    }
+
+    private void CreateSimulation()
+    {
+        Moves = HttpContext.Session.GetString("Moves") ?? "";
+        MapWidth = Math.Clamp(HttpContext.Session.GetInt32("MapWidth") ?? 8, 5, 20);
+        MapHeight = Math.Clamp(HttpContext.Session.GetInt32("MapHeight") ?? 6, 5, 20);
+
+        Simulation = new(
+            new SmallTorusMap(MapWidth, MapHeight),
+            [
+                new Orc("Gorbag"),
+                new Elf("Elandor"),
+                new Animals() {Description = "Rabbits", Size = 5},
+                new Birds() {Description = "Eagles", Size = 15, CanFly = true},
+            ],
+            [new(0, 0), new(0, 0), new(0, 0), new(0, 0)],
+            Moves
+        );
+
+        if (Simulation.Moves.Length > 0)
+            Counter = HttpContext.Session.GetInt32("Counter") ?? 1;
+        else
+            Counter = 0;
     }
 
     private void RunSimulation()

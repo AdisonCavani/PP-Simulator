@@ -1,48 +1,71 @@
 ﻿@page
+@using Simulator
 @model SimulationModel
-@{
-    ViewData["Title"] = "Symulacja";
-}
 
-<div class="xddd">
-    <form asp-page="/Simulation" method="post">
-        <button class="d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" disabled="@(Model.Counter <= 1 ? "disabled": null)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-            </svg>
-        </button>
-    </form>
+<form asp-page="/Simulation" method="post" asp-page-handler="Submit" class="form-inputs">
+	<div>
+		<label for="moves">Ruchy:</label>
+		<input id="moves" name="moves" type="text" placeholder="[...]" value="@Model.Moves" />
+	</div>
 
-    <p style="font-size: 20px;"><b>Tura @Model.Counter</b></p>
+	<div>
+		<label for="mapWidth">Szerokość mapy:</label>
+		<input id="mapWidth" name="mapWidth" type="number" min="5" max="20" value="@Model.MapWidth" />
+	</div>
 
-    <form asp-page="/Simulation" method="post">
-        <button class="d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" disabled="@(Model.Counter >= Model.Simulation.Moves.Length ? "disabled": null)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-            </svg>
-        </button>
-        <input name="Type" value="increment" readonly hidden />
-    </form>
+	<div>
+		<label for="mapHeight">Wysokość mapy:</label>
+		<input id="mapHeight" name="mapHeight" type="number" min="5" max="20" value="@Model.MapHeight" />
+	</div>
+
+	<button type="submit">Uruchom symulację</button>
+</form>
+
+<p>Sekwencja ruchów: <b>@DirectionParser.ParseStr(Model.Moves)</b></p>
+
+<div class="turn-steering">
+	<form asp-page="/Simulation" method="post" asp-page-handler="Decrement">
+		<button class="d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" disabled="@(Model.Counter <= 1 ? "disabled": null)">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+			</svg>
+		</button>
+	</form>
+
+	<p style="font-size: 20px;"><b>Tura @Model.Counter</b></p>
+
+	<form asp-page="/Simulation" method="post" asp-page-handler="Increment">
+		<button class="d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" disabled="@(Model.Counter >= Model.Simulation.Moves.Length ? "disabled": null)">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+				<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+			</svg>
+		</button>
+	</form>
 </div>
+
 
 <div class="map">
-    @for (var y = Model.Simulation.Map.SizeY - 1; y >= 0; y--)
-    {
-        <div class="row">
-            @for (var x = 0; x < Model.Simulation.Map.SizeX; x++)
-            {
-                var creatures = Model.Simulation.Map.At(x, y);
-                var symbol = Model.GetSymbol(creatures);
+	@for (var y = Model.Simulation.Map.SizeY - 1; y >= 0; y--)
+	{
+		<div class="row">
+			@for (var x = 0; x < Model.Simulation.Map.SizeX; x++)
+			{
+				var creatures = Model.Simulation.Map.At(x, y);
+				var symbol = Model.GetSymbol(creatures);
 
-                <div class="cell">
-                    @if (symbol is not null)
-                    {
-                        <img src="@Url.Content(symbol)" alt="Creature symbol" />
-                    }
-                </div>
-        }
-        </div>
-    }
+				<div class="cell">
+					@if (symbol is not null)
+					{
+						<img src="@Url.Content(symbol)" alt="Creature symbol" />
+					}
+				</div>
+			}
+		</div>
+	}
 </div>
 
-<p class="current-creature">@Model.Simulation.CurrentCreature ⇒ <span class="current-move-name">@Model.Simulation.CurrentMoveName</span></p>
+@if (Model.Simulation.Moves.Length > 0)
+{
+	<p class="current-creature">@Model.Simulation.CurrentCreature ⇒ <span class="current-move-name">@Model.Simulation.CurrentMoveName</span></p>
+}
+
